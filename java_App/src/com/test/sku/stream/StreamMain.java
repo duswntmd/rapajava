@@ -43,7 +43,7 @@ public class StreamMain {
 //		userList();
 //		addUser();
 //		textUpdate();
-		textDelete();
+//		textDelete();
 		
 	}
 	
