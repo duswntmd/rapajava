@@ -1,12 +1,17 @@
 package com.test.sku.thread;
 
-public class RunnableImpl01 implements Runnable {
+public class Consumer extends Thread {
 
+	private Counter counter;
+	
+	public Consumer(Counter counter) {
+		super("소비자");
+		this.counter = counter;
+	}
 	@Override
 	public void run() {
-		String it = Thread.currentThread().getName();
-		for(int i=0; i<10; i++) {
-			System.out.println(it + i);
+		while(true) {
+			counter.decrease();
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -14,7 +19,6 @@ public class RunnableImpl01 implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		System.out.println(it + "Thread Dead");
 	}
 
 }

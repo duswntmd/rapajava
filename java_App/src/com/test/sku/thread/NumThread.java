@@ -1,7 +1,11 @@
 package com.test.sku.thread;
 
-public class RunnableImpl01 implements Runnable {
+public class NumThread extends Thread {
 
+	public NumThread(String name) {
+		super(name);
+	}
+	
 	@Override
 	public void run() {
 		String it = Thread.currentThread().getName();
@@ -13,8 +17,9 @@ public class RunnableImpl01 implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		}
-		System.out.println(it + "Thread Dead");
+		System.out.println("Thread Dead");
 	}
 
 }
