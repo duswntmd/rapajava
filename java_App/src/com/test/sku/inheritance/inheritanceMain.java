@@ -24,19 +24,19 @@ public class inheritanceMain {
 //		inheritanceTest01();
 //		inheritanceTest02();
 //		inheritanceTest03();
-//		inheritanceTest04();
+		inheritanceTest04();
 //		inheritanceTest05();
 		
-		boolean go = true;
-		while(go) {
-			String m = ShowMenu();
-			switch (m) {
-			case "x": go = false; break; 
-			case "a": add(); break; 
-			case "s": list(); break; 			
-			}
-		
-		}
+//		boolean go = true;
+//		while(go) {
+//			String m = ShowMenu();
+//			switch (m) {
+//			case "x": go = false; break; 
+//			case "a": add(); break; 
+//			case "s": list(); break; 			
+//			}
+//		
+//		}
 //		System.out.println("프로그램 종료");
 		
 		// 상속성, 다형성, 은닉성
@@ -146,10 +146,25 @@ public class inheritanceMain {
 	private static void inheritanceTest04() {
 		// 이용자가 마우스, 모니터 한꺼번에 구입한 경우
 		List<Item> cart = new ArrayList<>();
+		// Generics(메소드, 클래스)
 		Mouse mouse = new Mouse("하이텍광마우스","Hitec", 15000, "2020-08-12", "무선");
 		Monitor monitor = new Monitor("하이텍모니터","Hitec", 75000, "2020-08-12", 16.7F);
-		cart.add(mouse);
-		cart.add(monitor);
+		
+		cart.add(mouse);   //Item 형으로 형변환 발생(Up Casting) : 부모클래스에 선언된 변수/메소드만 사용가능
+		cart.add(monitor); 
+		
+//		mouse.wireless
+//		monitor.size
+		
+		for(Item item : cart) { //개선된 for루프
+			if(item instanceof Mouse ) {
+				Mouse ms = (Mouse) item;
+				System.out.printf("%s \t %s %n", ms.name, ms.wireless);
+			}else if(item instanceof Monitor) {
+				Monitor mt = (Monitor) item;
+				System.out.printf("%s \t %s %n", mt.name, mt.size);
+			}
+		}
 		
 		for(int i=0; i<cart.size(); i++) {
 			System.out.println(cart.get(i));
@@ -168,12 +183,12 @@ public class inheritanceMain {
 
 	private static void inheritanceTest01() {
 		Item item = new Item();
-		 item.setName("Momory");
-		 item.setMade("한국 Digital");
-		 item.setpDate("2020-11-20");
-		 item.setPrice(52000);
+		item.setName("Momory");
+		item.setMade("한국 Digital");
+		item.setpDate("2020-11-20");
+		item.setPrice(52000);
 		 
-		 System.out.println(item);
+		System.out.println(item);
 	}
 
 }
