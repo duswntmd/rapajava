@@ -19,7 +19,7 @@ public class Server {
 				System.out.println("클리이언트 접속");
 				
 				new LoginThread(s).start();
-
+ 
 			}
 			
 		} catch (IOException e) {

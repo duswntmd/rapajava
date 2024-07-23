@@ -25,7 +25,7 @@ public class LoginThread extends Thread{
 		try {
             OutputStream out = s.getOutputStream();
             this.oos = new ObjectOutputStream(out);
-            
+             
             ChatMsg cm = new ChatMsg("서버", "클라이언트", "아이디 암호");
             oos.writeObject(cm);
             oos.flush();
@@ -36,8 +36,9 @@ public class LoginThread extends Thread{
             ChatMsg cm2 = (ChatMsg) oin.readObject();
             System.out.printf("%s : %s %n", cm2.uid, cm2.pwd);
             
-            if(cm2.uid.length() > 3 && cm2.pwd.length() > 3) {
-            	new ChatThread(this.oin, this.oos).start();
+            if(cm2.uid.length() > 3 && cm2.pwd.length() > 3) {         // 이용자 인증
+            	ChatThread.user.put(cm2.uid, oos);
+            	new ChatThread(cm2.uid, this.s, this.oin, this.oos).start();    // 채팅 시작
             }else {
             	ChatMsg cm3 = new ChatMsg("서버", "클라이언트", "로그인 실패");
             	oos.writeObject(cm3);

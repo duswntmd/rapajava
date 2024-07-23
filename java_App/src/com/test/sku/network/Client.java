@@ -12,6 +12,7 @@ public class Client {
 		// 클라이언트 소켓을 이용하여 서버에 접속한다
 		try {
 			Socket s = new Socket("localhost", 1234); //접속 요청
+//			Socket s = new Socket("220.67.113.231", 1234); //접속 요청
 			
 			InputStream in = s.getInputStream();
 			OutputStream out = s.getOutputStream();
@@ -31,22 +32,56 @@ public class Client {
 			oos.writeObject(cm2);
 			oos.flush();
 			
-			ChatMsg cm3 = (ChatMsg)oin.readObject();
+			cm = (ChatMsg)oin.readObject();
 			
-			if(cm3.msg.equals("로그인 성공")) {
+			if(cm.msg.equals("로그인 성공")) {
+				new ClientNetinputThread(oin).start();
 				while(true) {
-					System.out.println("메세지: ");
-					String msg = kbd.nextLine();		
-					cm3.msg = msg;
-					oos.writeObject(cm3);
-					oos.flush();
+					// 귀속말(s) 공개메시지(p):
+					// s: 수신자 아이디:ㅁㅁㅁㅁ 메시지: ㄱㄱㄱ
+					// msg.isSecret = true
+					// msg.to = ㅁㅁㅁ
+					// msg.msg = ㄱㄱㄱ
 					
-					cm3 = (ChatMsg)oin.readObject();
-					System.out.println(cm3.msg);
+					while(true) {   // 채팅 시작
+						System.out.println("귓속말(s) 공개메시지(p) 종료(x):");
+						String m = kbd.nextLine().trim();
+						
+						if(m.equalsIgnoreCase("x")) {
+							System.out.println("채팅을 종료합니다");
+							break;
+						}
+						else if(m.equals("s")) {
+							System.out.println("수신자:");
+							String rec = kbd.nextLine();
+							
+							System.out.println("메시지:");
+							String msg = kbd.nextLine();
+							
+							cm = new ChatMsg();
+							cm.uid = uid;  			// 송신
+							cm.isSecret = true;		// 비밀 메시지
+							cm.to = rec;			// 수신
+							cm.msg = msg;			// 대화
+							
+							oos.writeObject(cm);
+							oos.flush();
+							continue;
+				 			
+						}
+						System.out.println("메시지:");
+						String msg = kbd.nextLine().trim();
+						
+						cm = new ChatMsg();
+						cm.uid = uid;
+						cm.msg = msg;
+						oos.writeObject(cm);
+						oos.flush();
+					}
 				}
+			}else {
+				System.out.println("로그인 실패");
 			}
-			
-//			new ChatThread(oin, oos).start();
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
