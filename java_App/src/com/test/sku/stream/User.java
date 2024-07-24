@@ -5,6 +5,8 @@ public class User{
 	private String pwd;
 	
 	public User() {}
+	
+	
 
 	public User(String id, String pwd) { //기본생성자(Constuctor)
 		setId(id);

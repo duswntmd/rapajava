@@ -9,8 +9,10 @@ public class ChatMsg implements Serializable{
 	String from;
 	String to;    // 받는 사람의 아이디
 	String msg;
+	String fname; //첨부 파일
 	boolean login;
 	boolean isSecret;
+	boolean upload;
 	byte[] fdata;
 
 	public ChatMsg() {}
@@ -27,6 +29,11 @@ public class ChatMsg implements Serializable{
 		this.to = to;
 		this.msg = msg;
 	}
+
+
+//	public ChatMsg(String fname) {
+//		this.fname = fname;
+//	}
 	
 	
 	
