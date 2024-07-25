@@ -21,13 +21,18 @@ public class ClientNetinputThread extends Thread{
 	public void run() {
 		try {
             while (true) {
+//            	chatMsg = (ChatMsg) oin.readObject(); // Update chatMsg with new messages
+//                System.out.println(chatMsg.fname);
             	ChatMsg cm = (ChatMsg)oin.readObject();
-				System.out.println("["+cm.uid+"]" + cm.msg);
-				
-				 if (cm.fdata != null && cm.fdata.length > 0) {
-	                    chatMsg = cm;
-	                    System.out.println("첨부파일(" + cm.fname + ") 다운로드(y/n)");
-	                }
+////				System.out.println("["+cm.uid+"]" + cm.msg);
+//				 if (cm.fdata != null && cm.fdata.length > 0) {
+//	                    chatMsg = cm;
+//	                    System.out.println("첨부파일(" + cm.fname + ") 다운로드(y/n)");
+//	                }
+            	if (cm.fdata != null && cm.fdata.length > 0) {
+                    chatMsg = cm;
+                    System.out.println("첨부파일(" + cm.fname + ") 업로드(y/n)");
+                }
             }
         } catch (Exception e) {
         	e.printStackTrace();

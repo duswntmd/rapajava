@@ -4,12 +4,15 @@ import java.io.Serializable;
 
 public class ChatMsg implements Serializable{
 	
+	int no;
 	String uid;
 	String pwd;
 	String from;
 	String to;    // 받는 사람의 아이디
 	String msg;
 	String fname; //첨부 파일
+	String author;
+	String explanation;
 	boolean login;
 	boolean isSecret;
 	boolean upload;

@@ -14,6 +14,7 @@ public class ChatThread extends Thread{
 	private ObjectOutputStream oos;
     
 	static Map<String, ObjectOutputStream> user = new HashMap<>();
+	static Map<FileInfo, ObjectOutputStream> file = new HashMap<>();
 	
 	public ChatThread() {}
 	 
@@ -33,6 +34,13 @@ public class ChatThread extends Thread{
 		}
         
     }
+    
+    public ChatThread( Socket s, ObjectInputStream oin, ObjectOutputStream oos) {
+    	this.s = s;
+        this.oin = oin;
+        this.oos = oos;
+              
+    }
 	
 	@Override
 	public void run() {
@@ -40,6 +48,11 @@ public class ChatThread extends Thread{
             while (true) {
                 ChatMsg cm = (ChatMsg)oin.readObject(); // 클라이언트가 종료하면 SocketException발생
                 if(cm.isSecret) {
+                	user.get(cm.to).writeObject(cm);
+                	user.get(cm.to).flush();
+                	continue;
+                }
+                if(cm.upload) {
                 	user.get(cm.to).writeObject(cm);
                 	user.get(cm.to).flush();
                 	continue;

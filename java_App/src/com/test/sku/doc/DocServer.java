@@ -1,4 +1,4 @@
-package com.test.sku.network;
+package com.test.sku.doc;
 
 import java.io.IOException;
 import java.net.ServerSocket;
