@@ -1,47 +1,39 @@
 package com.test.sku.doc;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+
+import javax.xml.crypto.Data;
 
 public class FileInfo implements Serializable {
 
     int number ;
-
     String fileName;
-
     byte[] fileData;
-
     String who ;
-
+    String content;
     String writeDate;
 
-    String content;
-
-    public FileInfo(String fileName, String who, String content) {
+    public FileInfo(int number, String fileName, byte[] fileData, String who, String content, String writeDate) {
+    	this.number = number;
         this.fileName = fileName;
+        this.fileData = fileData;
         this.who = who;
         this.content = content;
+        this.writeDate = writeDate;
     }
 
     @Override
     public String toString() {
-        return "FileInfo{" +
-                "fileName='" + fileName + '\'' +
-                ", who='" + who + '\'' +
-                ", content='" + content + '\'' +
-                '}';
-    }
-
-    public FileInfo(int i, String fileName, byte[] fileData, String who, String number, String content) {
-
-        setNumber(i);
-        setFileName(fileName);
-        setFileData(fileData);
-        setWho(who);
-        setWriteDate(number);
-        setContent(content);
-
+        return String.format("%d\t파일명:%s\t파일크기:%d[byte]\t작성자:%s\t내용:%s\t날짜:%s",
+        		number,
+                fileName,
+                (fileData != null ? fileData.length : 0),
+                who,
+                content,
+                writeDate);
     }
 
     public void FileIO(){};

@@ -41,49 +41,49 @@ public class FileIO {
 		}
 		return false;
 	}
+	
+	public boolean update(String fname, byte[] newData) {
+	    // 파일 경로를 생성합니다.
+	    File file = new File(savePath + fname);
 
+	    // 파일이 존재하는지 확인합니다.
+	    if (file.exists()) {
+	        try {
+	            // 파일을 새 데이터로 덮어씌웁니다.
+	            FileOutputStream fout = new FileOutputStream(file);
+	            fout.write(newData);
+	            fout.close();
+	            System.out.println(file.getPath() + " 파일이 업데이트되었습니다.");
+	            return true;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            System.err.println(file.getPath() + " 파일 업데이트에 실패했습니다.");
+	        }
+	    } else {
+	        System.err.println(file.getPath() + " 파일이 존재하지 않습니다.");
+	    }
 
-    public boolean Serialization(List<FileInfo> file)
-    {
-        try {
+	    return false;
+	}
+	
+	public boolean delete(String fname) {
+	    // 파일 경로를 생성합니다.
+	    File file = new File(savePath + fname);
 
-            ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream("/Users/jeongjaeho/Desktop/0722/Doc/Files/list_fileinfo.ser"));
-            oos.writeObject(file);
-            oos.flush();
-            oos.close();
-           return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+	    // 파일이 존재하는지 확인합니다.
+	    if (file.exists()) {
+	        // 파일을 삭제합니다.
+	        if (file.delete()) {
+	            System.out.println(file.getPath() + " 파일이 삭제되었습니다.");
+	            return true;
+	        } else {
+	            System.err.println(file.getPath() + " 파일 삭제에 실패했습니다.");
+	        }
+	    } else {
+	        System.err.println(file.getPath() + " 파일이 존재하지 않습니다.");
+	    }
 
-           return false;
-        }
-
-
-    }
-
-    public static List<FileInfo> deserialization(){
-
-        String path ="/Users/jeongjaeho/Desktop/0722/Doc/Files/files.ser";
-
-        try{
-            ObjectInputStream ois =new ObjectInputStream(new FileInputStream(path));
-            List<FileInfo> list =(List<FileInfo>)ois.readObject();
-            ois.close();
-
-            /*
-            System.out.println("\t역직렬화 후의 리스트 내용보기");
-            for(FileInfo f :list){
-                System.out.println(f);
-            }
-            */
-            return list;
-        }catch (Exception e){
-            System.err.println("파일 읽기 실패");
-            e.printStackTrace();
-        }
-            return null;
-
-    }
-
+	    return false;
+	}
 
 }

@@ -7,21 +7,20 @@ import java.util.List;
 public class Msg implements Serializable {
 
     String menu ;    
+    boolean deleteFiles;
+    boolean updateFiles;
+    boolean findFiles;
     boolean showFiles;
     boolean saveFiles;
     boolean upload;
+    boolean delete;
     String response;
     int number ;
     List<FileInfo> flist;
-
     String fileName;
-
     byte[] fileData;
-
     String who ;
-
     Date writeDate;
-
     String content;
 
     public String getMenu() {
