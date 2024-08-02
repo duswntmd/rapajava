@@ -146,9 +146,18 @@ public class OracleJDBC
 	    System.out.print("페이지당 항목 수:");
 	    int ipp = kbd.nextInt(); kbd.nextLine();
 
-	    List<EmpVO> list = dao.getPage(page, ipp);
+//	    List<EmpVO> list = dao.getPage(page, ipp);
+//	    int ipp = 5;
+	    PageItem pi = dao.getPage1(page, ipp);
+	    List<EmpVO> list = pi.getList();
+	    
+	    int cp = pi.getCurrPage();
+	    int tp = pi.getTotalPages();
+	    System.out.printf("%d / %d %n", cp, tp);
+	    
+//	    System.out.println("현재 페이지: " + pi.getCurrPage() + " / 총 페이지 수: " + pi.getTotalPages());
 	    for (int i = 0; i < list.size(); i++) {
-	        System.out.println(list.get(i));
+	    	System.out.println(list.get(i));
 	    }
    }
 }

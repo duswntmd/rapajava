@@ -36,6 +36,86 @@ public class EmpDAO2
       return null;
    }
    
+   public  PageItem getPage1(int page, int ipp) {
+//	   String sql = "SELECT * FROM "
+//               + "("
+//               + "    SELECT t2.*, TRUNC((RN-1)/3+1) AS page FROM "
+//               + "    ( "
+//               + "        SELECT t.*, ROWNUM RN FROM "
+//               + "        ( "
+//               + "            SELECT * FROM emp2, "
+//               + "            ( "
+//               + "               SELECT CEIL(COUNT(*)/3) total FROM emp2 "
+//               + "            ) "
+//               + "        )t "
+//               + "    )t2 "
+//               + ") "
+//               + "WHERE page=?";			
+	   String sql = "SELECT * FROM "
+               + "("
+               + "  SELECT t2.*, TRUNC((RN-1)/?+1) AS page FROM "
+               + "  ("
+               + "    SELECT t.*, ROWNUM RN FROM "
+               + "    ("
+               + "      SELECT empno, "
+               + "             LPAD(' ', (LEVEL-1)*3, ' ') || ename ename, "
+               + "             sal, deptno, job, hiredate, total "
+               + "      FROM emp2, "
+               + "           (SELECT CEIL(COUNT(*)/?) total FROM emp2) "
+               + "      START WITH mgr IS NULL "
+               + "      CONNECT BY PRIOR empno = mgr "
+               + "      ORDER SIBLINGS BY empno "
+               + "    ) t"
+               + "  ) t2 "
+               + ") WHERE page = ?"; 
+
+	   conn = getConn();
+	      try {
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setInt(1, ipp);
+	         pstmt.setInt(2, ipp);
+	         pstmt.setInt(3, page);
+	         rs = pstmt.executeQuery();
+	         
+	         List<EmpVO> list = new ArrayList<>();
+	         PageItem pageItems = new PageItem();
+	         
+	         int i = 0;
+	         while(rs.next()) {
+	            if(i==0) {
+	               int currPage = rs.getInt("PAGE");
+	               int totalPages = rs.getInt("TOTAL");
+	               pageItems.setCurrPage(currPage);
+	               pageItems.setTotalPages(totalPages);
+	            }
+	            int empno = rs.getInt("EMPNO");
+	            String ename = rs.getString("ENAME");
+	            java.sql.Date hiredate = rs.getDate("HIREDATE");
+	            int deptno = rs.getInt("DEPTNO");
+	            int salary = rs.getInt("SAL");
+	            String job = rs.getString("JOB");
+	            
+	            EmpVO emp = new EmpVO();
+	            emp.setEmpno(empno);
+	            emp.setEname(ename);
+	            emp.setDeptno(deptno);
+	            emp.setHiredate(hiredate);
+	            emp.setSal(salary);
+	            emp.setJob(job);
+	            
+	            list.add(emp);
+	            i++;
+	         }
+	         pageItems.setList(list);
+	         return pageItems;
+
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}	   
+	   return null;
+   }
+   
    public List<EmpVO> getPage(int page, int ipp) {
 	   String sql = "SELECT * FROM\r\n"
 			   	   + "(\r\n"
@@ -43,7 +123,7 @@ public class EmpDAO2
 				   + "   (\r\n"
 				   + "       SELECT * FROM emp2\r\n"
 				   + "   )t\r\n"
-				   + ") WHERE RN BETWEEN ? AND ?";
+				   + ") WHERE RN BETWEEN ? AND ?"; // WHERE page=2
 	   conn = getConn();
 	   try {
 		pstmt = conn.prepareStatement(sql);
@@ -78,6 +158,7 @@ public class EmpDAO2
 	}	   
 	   return null;
    }
+   
    public List<EmpVO> getList() //empno,ename,sal,deptno,job,hiredate,mgr,comm
    {
       conn = getConn();
