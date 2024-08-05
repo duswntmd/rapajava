@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.stream.events.Namespace;
+
 public class EmpDAO2 
 {
    //오라클 접속기능, 접속해제 기능
@@ -32,6 +34,30 @@ public class EmpDAO2
          return conn;
       }catch(Exception e) {
          e.printStackTrace();
+      }
+      return null;
+   }
+   
+   public Map<Integer, String[]> getEmpsByDept()
+   {
+      String sql = "SELECT deptno, COUNT(empno) \"사원수\", "
+            + "LISTAGG(ename,',') WITHIN GROUP(ORDER BY deptno) names "
+            + "FROM emp2 "
+            + "GROUP BY deptno";
+      conn = getConn();
+      try {
+         pstmt = conn.prepareStatement(sql);
+         rs = pstmt.executeQuery();
+         Map<Integer, String[]> map = new HashMap<>();
+         while(rs.next()) {
+            int deptno = rs.getInt("DEPTNO");
+            int cnt = rs.getInt("사원수");
+            String names = rs.getString("NAMES");
+            map.put(deptno, names.split("\\,"));
+         }
+         return map;
+      }catch(SQLException sqle) {
+         sqle.printStackTrace();
       }
       return null;
    }

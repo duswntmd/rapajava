@@ -1,6 +1,7 @@
 package com.test.sku.jdbc;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -13,20 +14,48 @@ public class OracleJDBC
    
    public static void main(String[] args) 
    {
-      boolean go = true;
-      while(go) {
-         switch(showMenu()) {
-         case ADD:       add();       break;
-         case LIST:      list();      break;
-         case FIND:      find();      break;
-         case JOIN:      join();      break;
-         case UPDATE:    update();    break;
-         case DELETE:    delete();    break;
-         case PAGE:      page();      break;
-         case EXIT:      go=false;    break;
-         }
-      }
-      System.out.println("프로그램 종료");
+//      boolean go = true;
+//      while(go) {
+//         switch(showMenu()) {
+//         case ADD:       add();       break;
+//         case LIST:      list();      break;
+//         case FIND:      find();      break;
+//         case JOIN:      join();      break;
+//         case UPDATE:    update();    break;
+//         case DELETE:    delete();    break;
+//         case PAGE:      page();      break;
+//         case EXIT:      go=false;    break;
+//         }
+//      }
+//      System.out.println("프로그램 종료");
+//	   EmpDAO2 dao = new EmpDAO2();
+//	      Map<Integer, String[]> map = dao.getEmpsByDept();
+//	      
+//	      System.out.printf("%s\t%s%n", "부서번호", "사원이름");
+//	      
+//	      for(int deptno=10;deptno<=40; deptno+=10) {
+//	         String[] names = map.get(deptno);
+//	         System.out.printf("%d\t%s%n", deptno, Arrays.toString(names));
+//	      }
+//	   
+	   
+	   /* board, attach 테이블을 사용하여
+	    * 글번호, 제목, 첨부파일 수를 화면에 표시해보세요.
+	    * BoardDAO 클래스 생성
+	    */
+	   BoardDAO dao = new BoardDAO();
+	      List <Map<String, String>> list = dao.getBoards();
+	      System.out.printf("%s\t%s\t\t%s%n", "글번호","제목","첨부파일 수");
+	      
+	      for(int i=0;i<list.size();i++) {
+	         Map<String, String> map = list.get(i);
+	         String sBid = map.get("BID");
+	         String sTitle = map.get("TITLE");
+	         String sAttCnt = map.get("ATTCNT");
+	         System.out.printf("%s\t%s\t\t%s%n", sBid,sTitle,sAttCnt);
+	      }
+	   
+	   System.out.println("프로그램 종료");
    }
 
    static MENU showMenu() {
